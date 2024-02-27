@@ -1,4 +1,4 @@
-# Card validation api as a test task
+# Card validation api ~~as a test task~~
 
 Using Golang `v1.22.0`
 

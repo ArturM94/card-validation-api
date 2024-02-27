@@ -7,16 +7,16 @@ import (
 )
 
 const (
-	ErrCodeInvalidCardNumberLength = 001
-	ErrCodeInvalidMonth            = 002
-	ErrCodeCardExpired             = 003
-	ErrCodeInternal                = 999
+	ErrCodeInvalidCardNumber = 001
+	ErrCodeInvalidMonth      = 002
+	ErrCodeCardExpired       = 003
+	ErrCodeInternal          = 999
 )
 
 var (
-	ErrInvalidCardNumberLength = errors.New("card number length must be 16")
-	ErrInvalidMonth            = errors.New("expiration month must be double digit numerical string from 01 to 12")
-	ErrCardExpired             = errors.New("card expired")
+	ErrInvalidCardNumber = errors.New("invalid card number")
+	ErrInvalidMonth      = errors.New("expiration month must be double digit numerical string from 01 to 12")
+	ErrCardExpired       = errors.New("card expired")
 )
 
 type Card struct {
@@ -29,9 +29,29 @@ type CardValidator struct {
 }
 
 func (v *CardValidator) validateNumber(number string) error {
-	if len(number) != 16 {
-		return ErrInvalidCardNumberLength
+	var sum int
+	parity := len(number) % 2
+
+	for i := len(number) - 1; i >= 0; i-- {
+		digit, err := strconv.Atoi(string(number[i]))
+		if err != nil {
+			return ErrInvalidCardNumber
+		}
+
+		if i%2 == parity {
+			digit *= 2
+			if digit > 9 {
+				digit -= 9
+			}
+		}
+
+		sum += digit
 	}
+
+	if sum%10 != 0 {
+		return ErrInvalidCardNumber
+	}
+
 	return nil
 }
 

@@ -38,8 +38,8 @@ func (h *ValidateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, ErrCardExpired):
 		badRequestError(w, ErrCodeCardExpired, err.Error())
 		return
-	case errors.Is(err, ErrInvalidCardNumberLength):
-		badRequestError(w, ErrCodeInvalidCardNumberLength, err.Error())
+	case errors.Is(err, ErrInvalidCardNumber):
+		badRequestError(w, ErrCodeInvalidCardNumber, err.Error())
 		return
 	case errors.Is(err, ErrInvalidMonth):
 		badRequestError(w, ErrCodeInvalidMonth, err.Error())
